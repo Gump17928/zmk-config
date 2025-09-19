@@ -5,8 +5,8 @@ manifest:
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
     # support nice_oled and nice_epaper
-    - name: mctechnology17
-      url-base: https://github.com/mctechnology17
+    # - name: mctechnology17
+    #   url-base: https://github.com/mctechnology17
 
     - name: Gump17928
       url-base: https://github.com/Gump17928
@@ -18,9 +18,9 @@ manifest:
       revision: main
       import: app/west.yml
     # support nice_oled and nice_epaper
-    - name: zmk-nice-oled
-      remote: mctechnology17
-      revision: main
+    # - name: zmk-nice-oled
+    #   remote: mctechnology17
+    #   revision: main
     - name: sofle_custom_oled        # <-- your module
       remote: Gump17928
       revision: main
