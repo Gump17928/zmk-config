@@ -26,7 +26,7 @@
 ---
 include:
   - board: nice_nano_v2
-    shield: sofle_left ssd1306_128x32
+    shield: sofle_left sofle-oled-custom
   - board: nice_nano_v2
-    shield: sofle_right ssd1306_128x32
+    shield: sofle_right sofle-oled-custom
     
