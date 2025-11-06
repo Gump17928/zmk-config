@@ -156,7 +156,7 @@
             // &rgb_ug RGB_BRD decrease brightness
             // &rgb_ug RGB_HUI increase hue
             // &rgb_ug RGB_HUD decrease hue
-            // &rgb_ug RGB_SAI increase saturation
+            // &rgb_ug RGB_SAI increase saturation 
             // &rgb_ug RGB_SAD decrease saturation
             // &rgb_ug RGB_EFF cycle to next effect                |         |         |         |         |         | |      |      |      |       |      |
 
