@@ -22,10 +22,10 @@
             tap-ms = <0>;
             bindings
                 = <&macro_press &mo 1>
-                , <&macro_tap &rgb_ug RGB_HUI &rgb_ug RGB_HUI>  // Shift hue +2 steps on press
+                , <&macro_tap &rgb_ug RGB_HUI>  // Single +30° shift on press
                 , <&macro_pause_for_release>
                 , <&macro_release &mo 1>
-                , <&macro_tap &rgb_ug RGB_HUD &rgb_ug RGB_HUD>  // Shift hue back -2 steps on release
+                , <&macro_tap &rgb_ug RGB_HUD>  // Single -30° shift back on release
                 ;
         };
         
@@ -37,16 +37,15 @@
             tap-ms = <0>;
             bindings
                 = <&macro_press &mo 2>
-                , <&macro_tap &rgb_ug RGB_HUD &rgb_ug RGB_HUD>  // Shift hue +4 steps on press
+                , <&macro_tap &rgb_ug RGB_HUD>  // Single -30° shift on press
                 , <&macro_pause_for_release>
                 , <&macro_release &mo 2>
-                , <&macro_tap &rgb_ug RGB_HUD &rgb_ug RGB_HUD &rgb_ug RGB_HUD &rgb_ug RGB_HUD>  // Shift hue back -4 steps on release
+                , <&macro_tap &rgb_ug RGB_HUI>  // Single +30° shift back on release
                 ;
         };
         
-        // Macro: Toggle GAMING layer with RGB hue shift
-        // Note: This shifts hue the same direction each toggle (wraps around the color wheel)
-        // To return to base color, you need an even number of toggles
+        // Macro: Toggle GAMING layer with green RGB color
+        // Sets green when entering gaming mode, returns to previous color when exiting
         tog_gaming_rgb: tog_gaming_rgb {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
@@ -54,7 +53,7 @@
             tap-ms = <0>;
             bindings
                 = <&macro_tap &tog 4>
-                , <&macro_tap &rgb_ug RGB_HUI &rgb_ug RGB_HUI &rgb_ug RGB_HUI &rgb_ug RGB_HUI &rgb_ug RGB_HUI &rgb_ug RGB_HUI>  // Shift hue +6 steps
+                , <&macro_tap &rgb_ug RGB_COLOR_HSB(120,100,50)>  // Set green color (120° hue, full saturation, medium brightness)
                 ;
         };
         
