@@ -37,7 +37,7 @@
             tap-ms = <0>;
             bindings
                 = <&macro_press &mo 2>
-                , <&macro_tap &rgb_ug RGB_HUI &rgb_ug RGB_HUI &rgb_ug RGB_HUI &rgb_ug RGB_HUI>  // Shift hue +4 steps on press
+                , <&macro_tap &rgb_ug RGB_HUD &rgb_ug RGB_HUD>  // Shift hue +4 steps on press
                 , <&macro_pause_for_release>
                 , <&macro_release &mo 2>
                 , <&macro_tap &rgb_ug RGB_HUD &rgb_ug RGB_HUD &rgb_ug RGB_HUD &rgb_ug RGB_HUD>  // Shift hue back -4 steps on release
@@ -45,6 +45,8 @@
         };
         
         // Macro: Toggle GAMING layer with RGB hue shift
+        // Note: This shifts hue the same direction each toggle (wraps around the color wheel)
+        // To return to base color, you need an even number of toggles
         tog_gaming_rgb: tog_gaming_rgb {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
@@ -52,8 +54,44 @@
             tap-ms = <0>;
             bindings
                 = <&macro_tap &tog 4>
-                , <&macro_tap &rgb_ug RGB_HUI &rgb_ug RGB_HUI &rgb_ug RGB_HUI &rgb_ug RGB_HUI &rgb_ug RGB_HUI &rgb_ug RGB_HUI>  // Shift hue +6 steps (toggles on/off)
+                , <&macro_tap &rgb_ug RGB_HUI &rgb_ug RGB_HUI &rgb_ug RGB_HUI &rgb_ug RGB_HUI &rgb_ug RGB_HUI &rgb_ug RGB_HUI>  // Shift hue +6 steps
                 ;
+        };
+        
+        // Macro: Undo (Ctrl+Z)
+        undo: undo {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <30>;
+            tap-ms = <30>;
+            bindings = <&macro_press &kp LCTRL>, <&macro_tap &kp Z>, <&macro_release &kp LCTRL>;
+        };
+        
+        // Macro: Cut (Ctrl+X)
+        cut: cut {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <30>;
+            tap-ms = <30>;
+            bindings = <&macro_press &kp LCTRL>, <&macro_tap &kp X>, <&macro_release &kp LCTRL>;
+        };
+        
+        // Macro: Copy (Ctrl+C)
+        copy: copy {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <30>;
+            tap-ms = <30>;
+            bindings = <&macro_press &kp LCTRL>, <&macro_tap &kp C>, <&macro_release &kp LCTRL>;
+        };
+        
+        // Macro: Paste (Ctrl+V)
+        paste: paste {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <30>;
+            tap-ms = <30>;
+            bindings = <&macro_press &kp LCTRL>, <&macro_tap &kp V>, <&macro_release &kp LCTRL>;
         };
     };
 };
@@ -63,7 +101,8 @@
 #define LOWER   1
 #define RAISE   2
 #define ADJUST  3
-#define GAMING  4   /* NEW */
+#define GAMING  4
+#define MEDIA   5   /* Media control layer for encoders */
 
 /* ===== Readability Macros ===== */
 #define TR            &trans
@@ -71,7 +110,9 @@
 #define MO_LOWER      &mo_lower_rgb   /* Momentary LOWER with RGB hue shift */
 #define MO_RAISE      &mo_raise_rgb   /* Momentary RAISE with RGB hue shift */
 #define TG_GAMING     &tog_gaming_rgb /* Toggle GAMING with RGB hue shift */
-#define SENS_BINDINGS &inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN
+#define TG_MEDIA      &tog MEDIA      /* Toggle MEDIA encoder layer */
+#define SENS_BINDINGS &inc_dec_kp LEFT RIGHT &inc_dec_kp DOWN UP  // Left encoder: horizontal, Right encoder: vertical (inverted for natural scroll)
+#define MEDIA_SENS    &inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT  // Left encoder: volume, Right encoder: track skip
 
 /* ===== RGB Layer Colors ===== */
 // These macros shift RGB hue when layers are activated:
@@ -155,14 +196,14 @@
         default_layer {
             label = "default";
             // ┌──────┬─────┬─────┬─────┬─────┬─────┐                         ┌─────┬─────┬─────┬─────┬─────┬────────┐
-            // │  `   │  1  │  2  │  3  │  4  │  5  │                         │  6  │  7  │  8  │  9  │  0  │ GM_TOG │  <-- above BKSP
+            // │  `   │  1  │  2  │  3  │  4  │  5  │                         │  6  │  7  │  8  │  9  │  0  │MD_TOG  │  <-- above BKSP
             // │ ESC  │  Q  │  W  │  E  │  R  │  T  │                         │  Y  │  U  │  I  │  O  │  P  │ BKSP   │
             // │ TAB  │  A  │  S  │  D  │  F  │  G  │                         │  H  │  J  │  K  │  L  │  ;  │  '     │
             // │ SHIFT│  Z  │  X  │  C  │  V  │  B  │  MUTE  │      │ EXTPWR │  N  │  M  │  ,  │  .  │  /  │ SHIFT  │
             // └──────┴─────┴─────┴─────┴─────┴─────┴────────┴──────┴────────┴─────┴─────┴─────┴─────┴─────┴────────┘
             //                   │ GUI │ ALT │ CTRL│ LOWER│ SPACE│    │ ENTER│ RAISE│ CTRL│ ALT │ GUI │
             bindings = <
-                &kp GRAVE &kp N1    &kp N2    &kp N3    &kp N4    &kp N5                            &kp N6   &kp N7    &kp N8    &kp N9    &kp N0    TG_GAMING
+                &kp GRAVE &kp N1    &kp N2    &kp N3    &kp N4    &kp N5                            &kp N6   &kp N7    &kp N8    &kp N9    &kp N0    TG_MEDIA
                 &kp ESC   &kp Q     &kp W     &kp E     &kp R     &kp T                             &kp Y    &kp U     &kp I     &kp O     &kp P     &kp BSPC
                 &kp TAB   &kp A     &kp S     &kp D     &kp F     &kp G                             &kp H    &kp J     &kp K     &kp L     &kp SEMI  &kp SQT
                 &kp LSHFT &kp Z     &kp X     &kp C     &kp V     &kp B   &kp C_MUTE &ext_power EP_TOG  &kp N &kp M     &kp COMMA &kp DOT   &kp FSLH  &kp RSHFT
@@ -174,6 +215,13 @@
         /* ---------- LOWER ---------- */
         lower_layer {
             label = "lower";
+            // ┌──────┬─────┬─────┬─────┬─────┬─────┐                         ┌─────┬─────┬─────┬─────┬─────┬────────┐
+            // │  TR  │ F1  │ F2  │ F3  │ F4  │ F5  │                         │ F6  │ F7  │ F8  │ F9  │ F10 │  F11   │
+            // │  `   │  1  │  2  │  3  │  4  │  5  │                         │  6  │  7  │  8  │  9  │  0  │  F12   │
+            // │  TR  │  !  │  @  │  #  │  $  │  %  │                         │  ^  │  &  │  *  │  (  │  )  │  |     │
+            // │  TR  │  =  │  -  │  +  │  {  │  }  │   TR   │      │   TR   │  [  │  ]  │  ;  │  :  │  \  │   TR   │
+            // └──────┴─────┴─────┴─────┴─────┴─────┴────────┴──────┴────────┴─────┴─────┴─────┴─────┴─────┴────────┘
+            //                   │ TR  │ TR  │ TR  │  TR  │  TR  │    │  TR  │  TR  │ TR  │ TR  │ TR  │
             bindings = <
                 TR        &kp F1     &kp F2     &kp F3         &kp F4     &kp F5              &kp F6     &kp F7     &kp F8          &kp F9     &kp F10    &kp F11
                 &kp GRAVE &kp N1     &kp N2     &kp N3         &kp N4     &kp N5              &kp N6     &kp N7     &kp N8          &kp N9     &kp N0     &kp F12
@@ -187,11 +235,18 @@
         /* ---------- RAISE ---------- */
         raise_layer {
             label = "raise";
+            // ┌────────┬─────┬─────┬─────┬─────┬─────┐                         ┌─────┬─────┬─────┬─────┬─────┬────────┐
+            // │ BT_CLR │ BT0 │ BT1 │ BT2 │ BT3 │ BT4 │                         │ TR  │ TR  │ TR  │ TR  │ TR  │ GM_TOG │
+            // │   TR   │ INS │PSCRN│MENU │ TR  │ TR  │                         │PG_UP│ TR  │ UP  │ TR  │  0  │   TR   │
+            // │   TR   │ ALT │CTRL │SHIFT│ TR  │CAPS │                         │PG_DN│LEFT │DOWN │RIGHT│ DEL │  BKSP  │
+            // │   TR   │UNDO │ CUT │COPY │PASTE│ TR  │   TR   │      │RGB_TOG │ TR  │ TR  │ TR  │ TR  │ TR  │   TR   │
+            // └────────┴─────┴─────┴─────┴─────┴─────┴────────┴──────┴────────┴─────┴─────┴─────┴─────┴─────┴────────┘
+            //                   │ TR  │ TR  │ TR  │  TR  │  TR  │    │  TR  │  TR  │ TR  │ TR  │ TR  │
             bindings = <
-                &bt BT_CLR  &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4            TR        TR        TR        TR        TR       TR
+                &bt BT_CLR  &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4            TR        TR        TR        TR        TR       TG_GAMING
                 TR          &kp INS      &kp PSCRN    &kp K_CMENU  TR            TR                      &kp PG_UP TR        &kp UP    TR        &kp N0   TR
                 TR          &kp LALT     &kp LCTRL    &kp LSHFT    TR            &kp CLCK                 &kp PG_DN &kp LEFT  &kp DOWN  &kp RIGHT &kp DEL  &kp BSPC
-                TR          &kp K_UNDO   &kp K_CUT    &kp K_COPY   &kp K_PASTE   TR       TR   &rgb_ug RGB_TOG   TR        TR        TR        TR       TR       TR
+                TR          &undo        &cut         &copy        &paste        TR       TR   &rgb_ug RGB_TOG   TR        TR        TR        TR       TR       TR
                                              TR            TR           TR        TR       TR   TR       TR        TR        TR        TR
             >;
             sensor-bindings = < SENS_BINDINGS >;
@@ -200,6 +255,13 @@
         /* ---------- ADJUST (auto when LOWER+RAISE) ---------- */
         adjust_layer {
             label = "adjust";
+            // ┌────────┬─────┬─────┬─────┬─────┬─────┐                         ┌─────┬─────┬─────┬─────┬─────┬────────┐
+            // │ BT_CLR │ BT0 │ BT1 │ BT2 │ BT3 │ BT4 │                         │ TR  │ TR  │ TR  │ TR  │ TR  │   TR   │
+            // │ EP_TOG │HUE -│HUE +│SAT -│SAT +│ EFF │                         │ TR  │ TR  │ TR  │ TR  │ TR  │   TR   │
+            // │   TR   │BRI -│BRI +│ TR  │ TR  │ TR  │                         │ TR  │ TR  │ TR  │ TR  │ TR  │   TR   │
+            // │   TR   │ TR  │ TR  │ TR  │ TR  │ TR  │   TR   │      │RGB_TOG │ TR  │ TR  │ TR  │ TR  │ TR  │   TR   │
+            // └────────┴─────┴─────┴─────┴─────┴─────┴────────┴──────┴────────┴─────┴─────┴─────┴─────┴─────┴────────┘
+            //                   │ TR  │ TR  │ TR  │  TR  │  TR  │    │  TR  │  TR  │ TR  │ TR  │ TR  │
             bindings = <
                 &bt BT_CLR        &bt BT_SEL 0     &bt BT_SEL 1     &bt BT_SEL 2     &bt BT_SEL 3     &bt BT_SEL 4                         TR   TR   TR   TR   TR   TR
                 &ext_power EP_TOG &rgb_ug RGB_HUD  &rgb_ug RGB_HUI  &rgb_ug RGB_SAD  &rgb_ug RGB_SAI  &rgb_ug RGB_EFF                      TR   TR   TR   TR   TR   TR
@@ -209,19 +271,45 @@
             >;
         };
 
-        /* ---------- GAMING (toggle via key above Backspace) ---------- */
+        /* ---------- GAMING (toggle via RAISE layer) ---------- */
         gaming_layer {
             label = "gaming";
-            // Currently identical to BASE; edit here for gaming-specific changes.
-            // We also include TG_GAMING at the same “above BKSP” position for easy exit.
+            // ┌──────┬─────┬─────┬─────┬─────┬─────┐                         ┌─────┬─────┬─────┬─────┬─────┬────────┐
+            // │ ESC  │  1  │  2  │  3  │  4  │  5  │                         │  6  │  7  │  8  │  9  │  0  │ GM_TOG │  <-- exit gaming
+            // │ TAB  │  Q  │  W  │  E  │  R  │  T  │                         │  Y  │  U  │  I  │  O  │  P  │  BKSP  │
+            // │SHIFT │  A  │  S  │  D  │  F  │  G  │                         │  H  │  J  │  K  │  L  │  ;  │   '    │
+            // │ CTRL │  Z  │  X  │  C  │  V  │  B  │  MUTE  │      │ EXTPWR │  N  │  M  │  ,  │  .  │  /  │ SHIFT  │
+            // └──────┴─────┴─────┴─────┴─────┴─────┴────────┴──────┴────────┴─────┴─────┴─────┴─────┴─────┴────────┘
+            //                   │ GUI │ ALT │CAPS │LOWER │SPACE │    │ENTER │RAISE │CTRL │ ALT │ GUI │
             bindings = <
-                &kp ESC &kp N1    &kp N2    &kp N3    &kp N4    &kp N5                            &kp N6   &kp N7    &kp N8    &kp N9    &kp N0    TG_GAMING
+                &kp ESC &kp N1    &kp N2    &kp N3    &kp N4    &kp N5                            &kp N6   &kp N7    &kp N8    &kp N9    &kp N0    TG_MEDIA
                 &kp TAB   &kp Q     &kp W     &kp E     &kp R     &kp T                             &kp Y    &kp U     &kp I     &kp O     &kp P     &kp BSPC
                 &kp LSHFT   &kp A     &kp S     &kp D     &kp F     &kp G                             &kp H    &kp J     &kp K     &kp L     &kp SEMI  &kp SQT
                 &kp LCTRL &kp Z     &kp X     &kp C     &kp V     &kp B   &kp C_MUTE &ext_power EP_TOG  &kp N &kp M     &kp COMMA &kp DOT   &kp FSLH  &kp RSHFT
                                    &kp LGUI &kp LALT &kp CLCK MO_LOWER &kp SPACE       &kp RET     MO_RAISE &kp RCTRL &kp RALT &kp RGUI
             >;
             sensor-bindings = < SENS_BINDINGS >;
+        };
+
+        /* ---------- MEDIA (encoder-only layer for media controls) ---------- */
+        media_layer {
+            label = "media";
+            // ┌──────┬─────┬─────┬─────┬─────┬─────┐                         ┌─────┬─────┬─────┬─────┬─────┬────────┐
+            // │  TR  │ TR  │ TR  │ TR  │ TR  │ TR  │                         │ TR  │ TR  │ TR  │ TR  │ TR  │   TR   │
+            // │  TR  │ TR  │ TR  │ TR  │ TR  │ TR  │                         │ TR  │ TR  │ TR  │ TR  │ TR  │   TR   │
+            // │  TR  │ TR  │ TR  │ TR  │ TR  │ TR  │                         │ TR  │ TR  │ TR  │ TR  │ TR  │   TR   │
+            // │  TR  │ TR  │ TR  │ TR  │ TR  │ TR  │   TR   │      │   TR   │ TR  │ TR  │ TR  │ TR  │ TR  │   TR   │
+            // └──────┴─────┴─────┴─────┴─────┴─────┴────────┴──────┴────────┴─────┴─────┴─────┴─────┴─────┴────────┘
+            //                   │ TR  │ TR  │ TR  │  TR  │  TR  │    │  TR  │  TR  │ TR  │ TR  │ TR  │
+            // Left Encoder: Volume Down/Up  |  Right Encoder: Previous/Next Track
+            bindings = <
+                TR TR TR TR TR TR             TR TR TR TR TR TR
+                TR TR TR TR TR TR             TR TR TR TR TR TR
+                TR TR TR TR TR TR             TR TR TR TR TR TR
+                TR TR TR TR TR TR TR TR       TR TR TR TR TR TR
+                         TR TR TR TR TR TR    TR TR TR TR
+            >;
+            sensor-bindings = < MEDIA_SENS >;  // Volume & track controls
         };
     };
 };
