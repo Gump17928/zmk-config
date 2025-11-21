@@ -125,6 +125,7 @@
 #define MO_RAISE      &mo_raise_rgb   /* Momentary RAISE with RGB hue shift */
 #define TG_GAMING     &tog_gaming_rgb /* Toggle GAMING with RGB hue shift */
 #define TG_MEDIA      &tog MEDIA      /* Toggle MEDIA encoder layer */
+// Standard encoder bindings - sensitivity controlled by triggers-per-rotation hardware setting
 #define SENS_BINDINGS &inc_dec_kp LEFT RIGHT &inc_dec_kp DOWN UP  // Left encoder: horizontal, Right encoder: vertical (inverted for natural scroll)
 #define MEDIA_SENS    &inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT  // Left encoder: volume, Right encoder: track skip
 
@@ -157,11 +158,11 @@
 
 &sensors {
     left_config {
-        triggers-per-rotation = <18>;
+        triggers-per-rotation = <36>;  // Doubled from 18 for better debouncing
     };
 
     right_config {
-        triggers-per-rotation = <24>;
+        triggers-per-rotation = <48>;  // Doubled from 24 for better debouncing  
     };
 };
 
@@ -223,7 +224,7 @@
                 &kp LSHFT &kp Z     &kp X     &kp C     &kp V     &kp B   &kp C_MUTE &ext_power EP_TOG  &kp N &kp M     &kp COMMA &kp DOT   &kp FSLH  &kp RSHFT
                                    &kp LGUI &kp LALT &kp LCTRL MO_LOWER &kp SPACE       &kp RET     MO_RAISE &kp RCTRL &kp RALT &kp RGUI
             >;
-            sensor-bindings = < SENS_BINDINGS >;
+            sensor-bindings = < SENS_HIGH >;
         };
 
         /* ---------- LOWER ---------- */
