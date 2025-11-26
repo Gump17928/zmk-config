@@ -224,7 +224,7 @@
                 &kp LSHFT &kp Z     &kp X     &kp C     &kp V     &kp B   &kp C_MUTE &ext_power EP_TOG  &kp N &kp M     &kp COMMA &kp DOT   &kp FSLH  &kp RSHFT
                                    &kp LGUI &kp LALT &kp LCTRL MO_LOWER &kp SPACE       &kp RET     MO_RAISE &kp RCTRL &kp RALT &kp RGUI
             >;
-            sensor-bindings = < SENS_HIGH >;
+            sensor-bindings = < SENS_BINDINGS >;
         };
 
         /* ---------- LOWER ---------- */
