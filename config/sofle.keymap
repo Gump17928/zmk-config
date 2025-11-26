@@ -176,11 +176,11 @@
 
 &sensors {
     left_config {
-        triggers-per-rotation = <60>;  // Doubled for immediate response (2 pulses per detent)
+        triggers-per-rotation = <50>;  // Doubled for immediate response (2 pulses per detent)
     };
 
     right_config {
-        triggers-per-rotation = <60>;  // Doubled for immediate response (2 pulses per detent)
+        triggers-per-rotation = <50>;  // Doubled for immediate response (2 pulses per detent)
     };
 };
 
