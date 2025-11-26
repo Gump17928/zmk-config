@@ -176,11 +176,11 @@
 
 &sensors {
     left_config {
-        triggers-per-rotation = <30>;  // Measured: 30 detents per full rotation for 1:1 response
+        triggers-per-rotation = <60>;  // Doubled for immediate response (2 pulses per detent)
     };
 
     right_config {
-        triggers-per-rotation = <30>;  // Measured: 30 detents per full rotation for 1:1 response
+        triggers-per-rotation = <60>;  // Doubled for immediate response (2 pulses per detent)
     };
 };
 
