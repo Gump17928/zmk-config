@@ -72,18 +72,6 @@
                 ;
         };
         
-        // Macro: Toggle MEDIA layer without RGB interference
-        // This prevents color shifts from getting stuck when toggling media mode
-        tog_media_rgb: tog_media_rgb {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            wait-ms = <0>;
-            tap-ms = <0>;
-            bindings
-                = <&macro_tap &tog 5>  // Toggle MEDIA layer (no RGB shift to avoid interference)
-                ;
-        };
-        
         // Macro: Undo (Ctrl+Z)
         undo: undo {
             compatible = "zmk,behavior-macro";
@@ -154,7 +142,7 @@
 #define MO_LOWER      &mo_lower_rgb   /* Momentary LOWER with RGB hue shift */
 #define MO_RAISE      &mo_raise_rgb   /* Momentary RAISE with RGB hue shift */
 #define TG_GAMING     &tog_gaming_rgb /* Toggle GAMING with RGB hue shift */
-#define TG_MEDIA      &tog_media_rgb  /* Toggle MEDIA encoder layer */
+#define TG_MEDIA      &tog MEDIA      /* Toggle MEDIA encoder layer */
 // Standard encoder bindings - 1:1 response with EC11 encoders (20 pulses per rotation)
 #define SENS_BINDINGS &inc_dec_kp LEFT RIGHT &inc_dec_kp DOWN UP  // Left encoder: horizontal (1:1), Right encoder: vertical (1:1, inverted for natural scroll)
 #define MEDIA_SENS    &inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT  // Left encoder: volume (1:1), Right encoder: track skip (1:1 per tick, but requires 5 ticks for intentional skip)
